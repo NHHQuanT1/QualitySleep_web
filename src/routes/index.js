@@ -4,6 +4,8 @@ const { database } = require("../firebase");
 const { Router } = require("express");
 const router = Router();
 const data = database.ref("mpuData");
+const alert = require('alert-node');
+
 let results = [];
 
 //TEST hàm tính kq
@@ -48,7 +50,7 @@ router.get('/viewdatas', async (req, res, next) => {
       resAnalysisList.sort((a,b) => a.id - b.id);
       this.results = resAnalysisList;
       // res.json(results);
-      res.render("index");
+      // res.render("index");
       // return this.results;
     }
     else{
@@ -64,7 +66,10 @@ router.get('/viewdatas', async (req, res, next) => {
 
     // Kiểm tra xem có dữ liệu không
     if (!values) {
-      return res.status(404).send("No data available in the specified timestamp range.");
+      console.log('No data available in the specified timestamp range');
+      alert('No data available in the specified timestamp range');
+      return;
+      // return res.status(404).send("No data available in the specified timestamp range.");
     }
 
     // Khởi tạo mảng để lưu dữ liệu gia tốc
@@ -138,7 +143,7 @@ router.get('/viewdatas', async (req, res, next) => {
 
     // Trả về kết quả cho client
     // res.json(results);
-    res.render("index");
+    // res.render("index");
 
 
   } 
@@ -202,7 +207,7 @@ router.get("/caculator", async (req, res) => {
     const total_sleep = temp.length;
     let quality_sleep;
     for (let i = 1; i < moveBody.length; i++){
-      if (moveBody[i] - moveBody[i-1] < 60) count_light_sleep ++;
+      if (moveBody[i] - moveBody[i-1] < 60) count_light_sleep += moveBody[i] - moveBody[i-1];
     }
   quality_sleep = Math.round((1-(count_light_sleep/total_sleep)) * 100) / 100;
   console.log(quality_sleep);

@@ -5,9 +5,6 @@ const morgan = require("morgan");
 
 const app = express();
 
-// db.connect();
-// database.connect();
-
 // Settings
 app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "views"));
@@ -31,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(require("./routes/index"));
 // app.use(require("./routes"));
 
-// Static files
+// // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 

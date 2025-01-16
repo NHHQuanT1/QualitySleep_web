@@ -15,6 +15,18 @@ body {
   margin-bottom: 40px;
 }
 
+#quality_sleep {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#quality_sleep:hover {
+  background-color: #7aaadf;
+}
+
 .divider:after,
 .divider:before {
 content: "";
