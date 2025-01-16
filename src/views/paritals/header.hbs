@@ -1,0 +1,168 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/" >
+      <img src="/src/public/img/logo.jpg" alt="Logo" style="height: 30px; margin-right: 10px;">
+      <strong>SLEEP QUALITY</strong>
+    </a>
+    
+      {{!-- TEST --}}
+    {{!-- <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Chọn thời gian
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <form id="timeForm" class="px-4 py-3">
+      <div class="form-group">
+        <label for="startTime">Thời gian bắt đầu:</label>
+        <input type="datetime-local" class="form-control" id="startTime" name="startTime" required>
+      </div>
+      <div class="form-group">
+        <label for="endTime">Thời gian kết thúc:</label>
+        <input type="datetime-local" class="form-control" id="endTime" name="endTime" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Chọn</button>
+    </form>
+  </div>
+</div>
+
+  <script>
+      // Xử lý sự kiện khi form được submit
+      document.getElementById('timeForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Ngăn chặn form submit theo cách thông thường
+
+      // Lấy giá trị startTime và endTime từ form
+      const startTime = document.getElementById('startTime').value;
+      const endTime = document.getElementById('endTime').value;
+
+      // Kiểm tra xem startTime và endTime có hợp lệ không
+      if (!startTime || !endTime) {
+        alert('Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc.');
+        return;
+      }
+
+      // Chuyển đổi giá trị từ datetime-local sang timestamp dạng giây
+      const startTimestamp = Math.floor(new Date(startTime).getTime() / 1000);
+      const endTimestamp = Math.floor(new Date(endTime).getTime() / 1000);
+
+      console.log('startTimestamp:', startTimestamp);
+      console.log('endTimestamp:', endTimestamp);
+
+      // Gọi API /viewdatas với startTimestamp và endTimestamp
+      const apiUrl = `/viewdatas?startTime=${startTimestamp}&endTime=${endTimestamp}`;
+      console.log('API URL:', apiUrl);
+
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            // Log thêm thông tin lỗi từ phản hồi
+            console.error('Lỗi phản hồi từ API:', response.status, response.statusText);
+            return response.text().then(text => {
+              throw new Error(`Lỗi từ API: ${text}`);
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Dữ liệu nhận được:', data);
+          alert('Dữ liệu đã được xử lý và lưu vào Firestore!');
+        })
+        .catch(error => {
+          console.error('Lỗi khi gọi API:', error);
+          alert('Đã xảy ra lỗi khi gọi API!');
+        });
+    });
+</script> --}}
+
+{{!-- CHọn 1 ngày --}}
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Phân tích
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <form id="timeForm" class="px-4 py-3">
+      <div class="form-group">
+        <label for="selectedDate">Giấc ngủ ngày:</label>
+        <input type="date" class="form-control" id="selectedDate" name="selectedDate" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Chọn</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Xử lý sự kiện khi form được submit
+  document.getElementById('timeForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Ngăn chặn form submit theo cách thông thường
+
+    // Lấy giá trị ngày được chọn
+    const selectedDate = document.getElementById('selectedDate').value;
+
+    // Kiểm tra xem ngày có hợp lệ không
+    if (!selectedDate) {
+      alert('Vui lòng chọn ngày.');
+      return;
+    }
+
+    // Tính toán khoảng thời gian từ 21h ngày được chọn đến 8h ngày hôm sau
+    const startTime = new Date(selectedDate + 'T21:00:00'); // 21h ngày được chọn
+    const endTime = new Date(selectedDate + 'T08:00:00'); // 8h ngày hôm sau
+    endTime.setDate(endTime.getDate() + 1); // Tăng thêm 1 ngày để thành 8h ngày hôm sau
+
+    // Chuyển đổi giá trị từ datetime sang timestamp dạng giây
+    const startTimestamp = Math.floor(startTime.getTime() / 1000);
+    const endTimestamp = Math.floor(endTime.getTime() / 1000);
+
+    console.log('startTimestamp:', startTimestamp);
+    console.log('endTimestamp:', endTimestamp);
+
+    // Gọi API /viewdatas với startTimestamp và endTimestamp
+    const apiUrl = `/viewdatas?startTime=${startTimestamp}&endTime=${endTimestamp}`;
+    //console.log('API URL:', apiUrl);
+
+//Lấy dữ liệu kết quả ngày cần lấy
+//Nếu có rồi view kết quả, chưa có thì vào case fetch
+
+
+    fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          // Nếu có lỗi, trả về thông báo
+          return response.json().then(errorData => {
+            throw new Error(errorData.error || "Lỗi khi gọi API");
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Dữ liệu nhận được:', data);
+        // Nếu có dữ liệu, chuyển hướng hoặc render trang index
+        window.location.href = "/"; // Chuyển hướng về trang chủ
+      })
+      .catch(error => {
+        console.error('Lỗi khi gọi API:', error);
+        alert(error.message || 'Dữ liệu ngày này chưa được đo, vui lòng chọn ngày khác');
+      });
+  });
+</script>
+  {{!-- Lựa chọn ngày kiểm tra giấc ngủ --}}
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="/src/public/img/avt.jpg" alt="" class="user-avatar">
+            Hồng Quân
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/accout/myprofile">Thông tin tài khoản</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/me/stored/courses">Lịch sử tra cứu</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Đăng xuất</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+  </div>
+</nav>

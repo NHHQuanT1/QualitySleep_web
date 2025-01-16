@@ -1,0 +1,301 @@
+<div class="home">
+  <div class="chart_view">
+
+  <div class="chart_child">
+  <div class="card-header">
+    <h5 class="card-title mb-0">Biểu đồ trục giá trị MadY</h5>
+  </div>
+  <div class="card-body py-3">
+    <div class="chart chart-sm">
+      <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;"></canvas>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+  {{!-- Trục Z --}}
+  <div class="chart_child">
+      <div class="card-header">
+          <h5 class="card-title mb-0">Biểu đồ trục Z</h5>
+      </div>
+      <div class="card-body py-3">
+          <div class="chart chart-sm"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+              <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;" width="856" height="504" class="chart-line chartjs-render-monitor"></canvas>
+          </div>
+      </div>
+  </div>
+
+  <script>
+  var chartsLine = document.querySelectorAll(".chart-line");
+
+  chartsLine.forEach(function(chart) {
+    if (!chart.getAttribute('data-chart-initialized')) {
+        var ctx = chart.getContext("2d");
+
+        var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+        gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+        gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+        // Line chart
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["21h", "22h", "23h", "0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h"],
+                datasets: [{
+                    label: "Sales ($)",
+                    fill: true,
+                    backgroundColor: gradient,
+                    borderColor: window.theme.primary,
+                    data: [
+                        2115,
+                        1562,
+                        1584,
+                        1892,
+                        1587,
+                        1923,
+                        2566,
+                        2448,
+                        2805,
+                        3438,
+                        2917,
+                        3327
+                    ]
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    intersect: false
+                },
+                hover: {
+                    intersect: true
+                },
+                plugins: {
+                    filler: {
+                        propagate: false
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        reverse: true,
+                        gridLines: {
+                            color: "rgba(0,0,0,0.0)"
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1000
+                        },
+                        display: true,
+                        borderDash: [3, 3],
+                        gridLines: {
+                            color: "rgba(0,0,0,0.0)"
+                        }
+                    }]
+                }
+            }
+        });
+        chart.setAttribute("data-chart-initialized", "true");
+    }
+  });
+  </script>
+
+  {{!-- Nhiệt độ --}}
+  <div class="chart_child">
+      <div class="card-header">
+          <h5 class="card-title mb-0">Biểu đồ nhiệt độ</h5>
+      </div>
+      <div class="card-body py-3">
+          <div class="chart chart-sm"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+              <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;" width="856" height="504" class="chart-line chartjs-render-monitor"></canvas>
+          </div>
+      </div>
+  </div>
+
+  <script>
+  var chartsLine = document.querySelectorAll(".chart-line");
+
+  chartsLine.forEach(function(chart) {
+    if (!chart.getAttribute('data-chart-initialized')) {
+        var ctx = chart.getContext("2d");
+
+        var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+        gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+        gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+        // Line chart
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["21h", "22h", "23h", "0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h"],
+                datasets: [{
+                    label: "Sales ($)",
+                    fill: true,
+                    backgroundColor: gradient,
+                    borderColor: window.theme.primary,
+                    data: [
+                        2115,
+                        1562,
+                        1584,
+                        1892,
+                        1587,
+                        1923,
+                        2566,
+                        2448,
+                        2805,
+                        3438,
+                        2917,
+                        3327
+                    ]
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    intersect: false
+                },
+                hover: {
+                    intersect: true
+                },
+                plugins: {
+                    filler: {
+                        propagate: false
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        reverse: true,
+                        gridLines: {
+                            color: "rgba(0,0,0,0.0)"
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1000
+                        },
+                        display: true,
+                        borderDash: [3, 3],
+                        gridLines: {
+                            color: "rgba(0,0,0,0.0)"
+                        }
+                    }]
+                }
+            }
+        });
+        chart.setAttribute("data-chart-initialized", "true");
+    }
+  });
+  </script>
+    
+  </div>
+
+  <div class="chart_result">
+    <div class="card flex-fill w-100 draggable">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Đánh giá giấc ngủ</h5>
+    </div>
+    <div class="card-body d-flex">
+        <div class="align-self-center w-100">
+            <div class="py-3">
+                <div class="chart chart-xs"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="chartjs-dashboard-pie" width="856" height="400" style="display: block; height: 200px; width: 428px;" class="chart-pie chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+
+            <table class="table mb-0">
+                <tbody>
+                    <tr>
+                        <td>Giấc ngủ ngon</td>
+                        <td class="text-end">88%</td>
+                    </tr>
+                    <tr>
+                        <td>Giấc ngủ tệ</td>
+                        <td class="text-end">12%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<button id="quality_sleep">Kết quả</button>
+
+<script>
+  //Tao nut lay ket qua
+    document.addEventListener('DOMContentLoaded', function () {
+    // Lấy nút "Kết quả" bằng ID
+    const qualitySleepButton = document.getElementById('quality_sleep');
+
+    // Lắng nghe sự kiện click
+    qualitySleepButton.addEventListener('click', function () {
+      {{!-- alert('Nút "Kết quả" đã được nhấn!'); --}}
+      const apiUrl = `/caculator`;
+      fetch(apiUrl)
+      .then(response => {
+        if (!response.ok) {
+          // Nếu có lỗi, trả về thông báo
+          return response.json().then(errorData => {
+            throw new Error(errorData.error || "Lỗi khi gọi API");
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Dữ liệu nhận được:', data);
+        // Nếu có dữ liệu, chuyển hướng hoặc render trang index
+        window.location.href = "/"; // Chuyển hướng về trang chủ
+      })
+      .catch(error => {
+        console.error('Lỗi khi gọi API:', error);
+        alert(error.message || 'Dữ liệu ngày này chưa được đo, vui lòng chọn ngày khác');
+      });
+    })
+});
+</script>
+
+<script>
+var chartsPie = document.querySelectorAll(".chart-pie");
+
+chartsPie.forEach(function(chart) {
+  if (!chart.getAttribute('data-chart-initialized')) {
+      new Chart(chart, {
+      type: "pie",
+        data: {
+          labels: ["Chrome", "Firefox"],
+          datasets: [{
+            data: [88%, 12%],
+            backgroundColor: [
+              window.theme.primary,
+              window.theme.danger
+            ],
+            borderWidth: 5
+          }]
+        },
+        options: {
+          responsive: !window.MSInputMethodContext,
+          maintainAspectRatio: false,
+          legend: {
+            display: false
+          },
+          cutoutPercentage: 75
+        }
+      });
+      chart.setAttribute("data-chart-initialized", "true");
+  }
+});
+</script>
+    
+  </div>
+
+
+</div>

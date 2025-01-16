@@ -1,0 +1,27 @@
+body {
+  background-color: #303030;
+}
+
+.chart_view{
+  display: flex;
+  justify-content: space-between; 
+}
+
+.chart_child {
+  width: 30%; 
+  background-color: rgb(255, 255, 255); 
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+}
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+
+
+
