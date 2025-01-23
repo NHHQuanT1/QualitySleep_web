@@ -5,53 +5,7 @@
       <strong>SLEEP QUALITY</strong>
     </a>
 
-  <script>
-      // Xử lý sự kiện khi form được submit
-      document.getElementById('timeForm').addEventListener('submit', function (event) {
-      event.preventDefault(); // Ngăn chặn form submit theo cách thông thường
-
-      // Lấy giá trị startTime và endTime từ form
-      const startTime = document.getElementById('startTime').value;
-      const endTime = document.getElementById('endTime').value;
-
-      // Kiểm tra xem startTime và endTime có hợp lệ không
-      if (!startTime || !endTime) {
-        alert('Vui lòng nhập đầy đủ thời gian bắt đầu và kết thúc.');
-        return;
-      }
-
-      // Chuyển đổi giá trị từ datetime-local sang timestamp dạng giây
-      const startTimestamp = Math.floor(new Date(startTime).getTime() / 1000);
-      const endTimestamp = Math.floor(new Date(endTime).getTime() / 1000);
-
-      console.log('startTimestamp:', startTimestamp);
-      console.log('endTimestamp:', endTimestamp);
-
-      // Gọi API /viewdatas với startTimestamp và endTimestamp
-      const apiUrl = `/viewdatas?startTime=${startTimestamp}&endTime=${endTimestamp}`;
-      console.log('API URL:', apiUrl);
-
-      fetch(apiUrl)
-        .then(response => {
-          if (!response.ok) {
-            // Log thêm thông tin lỗi từ phản hồi
-            console.error('Lỗi phản hồi từ API:', response.status, response.statusText);
-            return response.text().then(text => {
-              throw new Error(`Lỗi từ API: ${text}`);
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Dữ liệu nhận được:', data);
-          alert('Dữ liệu đã được xử lý và lưu vào Firestore!');
-        })
-        .catch(error => {
-          console.error('Lỗi khi gọi API:', error);
-          alert('Đã xảy ra lỗi khi gọi API!');
-        });
-    });
-</script>
+  
 
 {{!-- CHọn 1 ngày --}}
 <div class="dropdown">
@@ -99,8 +53,8 @@
     const apiUrl = `/viewdatas?startTime=${startTimestamp}&endTime=${endTimestamp}`;
     //console.log('API URL:', apiUrl);
 
-//Lấy dữ liệu kết quả ngày cần lấy
-//Nếu có rồi view kết quả, chưa có thì vào case fetch
+    //Lấy dữ liệu kết quả ngày cần lấy
+    //Nếu có rồi view kết quả, chưa có thì vào case fetch
 
 
     fetch(apiUrl)
@@ -116,6 +70,8 @@
       .then(data => {
         console.log('Dữ liệu nhận được:', data);
         // Nếu có dữ liệu, chuyển hướng hoặc render trang index
+        localStorage.setItem('data', JSON.stringify(data));
+        console.log("uysfu",localStorage.getItem('data'))
         window.location.href = "/"; // Chuyển hướng về trang chủ
       })
       .catch(error => {

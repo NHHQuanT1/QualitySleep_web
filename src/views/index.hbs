@@ -5,88 +5,68 @@
       <canvas id="myChart"></canvas>
     </div>
 
-    <script>
-      dataArray = results;
-      const dataArray = Array.from({ length: 2000 }, (_, i) => Math.sin(i * 0.1) * 100);
+  <div class="chart-container">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Biểu đồ trục giá trị MadY</h5>
+    </div>
+    <div class="card-body py-3">
+      <div class="chart chart-sm">
+        <canvas id="chartjs-dashboard-line"></canvas>
+        <script>
+          const data = JSON.parse(localStorage.getItem('data'));; // Nhận dữ liệu JSON từ server
+              const dataArray = data.map(row => Math.sin(row.madY*0.1)*100);
 
-      // Bước 2: Lấy thẻ canvas
-      const ctx = document.getElementById("myChart").getContext("2d");
+              // Bước 2: Lấy thẻ canvas
+              const ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
 
-      // Bước 3: Khởi tạo biểu đồ
-      const myChart = new Chart(ctx, {
-        type: "line", // Loại biểu đồ (line, bar, v.v.)
-        data: {
-          labels: [], // Không sử dụng nhãn
-          datasets: [{
-            label: "Performance", // Tên của dataset
-            data: dataArray, // Mảng dữ liệu của bạn (2000 phần tử)
-            borderColor: "#5e72e4", // Màu đường biểu đồ
-            backgroundColor: "transparent", // Màu nền (trong suốt)
-            borderWidth: 2, // Độ dày đường biểu đồ
-            pointRadius: 0, // Ẩn các điểm trên biểu đồ
-          }],
-        },
-        options: {
-          responsive: true, // Tự động điều chỉnh kích thước
-          maintainAspectRatio: false, // Không giữ tỷ lệ khung hình
-          legend: {
-            display: false, // Ẩn chú thích
-          },
-          tooltips: {
-            enabled: false, // Tắt tooltips
-          },
-          scales: {
-            xAxes: [{
-              display: false, // Ẩn trục x và nhãn
-              gridLines: {
-                display: false, // Ẩn đường lưới trên trục x
-              },
-            }],
-            yAxes: [{
-              gridLines: {
-                color: "rgba(0, 0, 0, 0.1)", // Màu đường lưới trục y
-              },
-              ticks: {
-                beginAtZero: true, // Bắt đầu trục y từ 0
-              },
-            }],
-          },
-        },
-      });
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="chart_child">
-  <div class="card-header">
-    <h5 class="card-title mb-0">Biểu đồ trục giá trị MadY</h5>
-  </div>
-  <div class="card-body py-3">
-    <div class="chart chart-sm">
-      <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;"></canvas>
+              // Bước 3: Khởi tạo biểu đồ
+              const myChart = new Chart(ctx, {
+                type: "line", // Loại biểu đồ (line, bar, v.v.)
+                data: {
+                  labels: data.map(row => row.id), // Không sử dụng nhãn
+                  datasets: [{
+                    label: "Performance", // Tên của dataset
+                    data: dataArray, // Mảng dữ liệu của bạn (2000 phần tử)
+                    borderColor: "#5e72e4", // Màu đường biểu đồ
+                    backgroundColor: "transparent", // Màu nền (trong suốt)
+                    borderWidth: 1, // Độ dày đường biểu đồ
+                    pointRadius: 0, // Ẩn các điểm trên biểu đồ
+                  }],
+                },
+                options: {
+                  responsive: true, // Tự động điều chỉnh kích thước
+                  maintainAspectRatio: false, // Không giữ tỷ lệ khung hình
+                  legend: {
+                    display: false, // Ẩn chú thích
+                  },
+                  tooltips: {
+                    enabled: false, // Tắt tooltips
+                  },
+                  scales: {
+                    xAxes: [{
+                      display: false, // Ẩn trục x và nhãn
+                      gridLines: {
+                        display: false, // Ẩn đường lưới trên trục x
+                      },
+                    }],
+                    yAxes: [{
+                      gridLines: {
+                        color: "rgba(0, 0, 0, 0.1)", // Màu đường lưới trục y
+                      },
+                      ticks: {
+                        beginAtZero: true, // Bắt đầu trục y từ 0
+                      },
+                    }],
+                  },
+                },
+              });
+        </script>
     </div>
   </div>
 </div>
 
-
-
-
-
-
-
-
-
   {{!-- Trục Z --}}
-  <div class="chart_child">
+  <div class="chart-container">
       <div class="card-header">
           <h5 class="card-title mb-0">Biểu đồ trục Z</h5>
       </div>
@@ -175,7 +155,7 @@
   </script>
 
   {{!-- Nhiệt độ --}}
-  <div class="chart_child">
+  <div class="chart-container">
       <div class="card-header">
           <h5 class="card-title mb-0">Biểu đồ nhiệt độ</h5>
       </div>

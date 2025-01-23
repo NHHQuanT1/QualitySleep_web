@@ -15,7 +15,10 @@ app.engine(
   exphbs.create({
     defaultLayout: "main",
     extname: ".hbs",
-    partialsDir: path.join(__dirname, 'views/paritals' )
+    partialsDir: path.join(__dirname, "views/paritals"),
+    helpers: {
+      json: (context) => JSON.stringify(context), // Định nghĩa helper `json`
+    },
   }).engine
 );
 app.set("view engine", ".hbs");

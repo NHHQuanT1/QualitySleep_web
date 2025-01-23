@@ -48,8 +48,8 @@ router.get('/viewdatas', async (req, res, next) => {
       const resAnalysisList = resAnalysisSnapshot.docs.map(doc => doc.data());
       console.log(resAnalysisList.length);
       resAnalysisList.sort((a,b) => a.id - b.id);
-      this.results = resAnalysisList;
-      // res.json(results);
+      results = resAnalysisList;
+      res.json(resAnalysisList);
       // res.render("index");
       // return this.results;
     }
