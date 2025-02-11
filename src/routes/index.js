@@ -8,8 +8,6 @@ const alert = require('alert-node');
 
 let results = [];
 
-//TEST hàm tính kq
-
 // Hàm tính Mean of Acceleration (A)
 function calculateMeanAcceleration(data) {
   const sum = data.reduce((acc, val) => acc + val, 0);
@@ -39,6 +37,7 @@ router.get('/viewdatas', async (req, res, next) => {
   // Chuyển đổi startTime và endTime từ string sang number
   const startTimestamp = parseInt(startTime, 10);
   const endTimestamp = parseInt(endTime, 10);
+  console.log('Timestamp ban chon: ',startTimestamp);
 
   try {
     const date = `resAnalysis_${startTimestamp}`; // Giac ngu ngay 15 tuc la tu 21h ngay 15 đến 7h sáng ngày 16
@@ -46,12 +45,17 @@ router.get('/viewdatas', async (req, res, next) => {
     const resAnalysisSnapshot = await resAnalysisCollection.get();
     if (!resAnalysisSnapshot.empty) {
       const resAnalysisList = resAnalysisSnapshot.docs.map(doc => doc.data());
-      console.log(resAnalysisList.length);
+      console.log(resAnalysisList.length); // đưa ra chiều dài dữ liệu đã cóc, để kiểm tra xem đã kiểm tra được dữ liệu đã tồn tại hay chưa
       resAnalysisList.sort((a,b) => a.id - b.id);
-      this.results = resAnalysisList;
-      // res.json(results);
-      // res.render("index");
-      // return this.results;
+      results = resAnalysisList;
+      // const madZ = resAnalysisList.map(item => item.madZ);
+      // const deltaP = resAnalysisList.map(item => item.deltaP);
+     
+      // console.log('gia tri madZ', madZ);
+      res.json(resAnalysisList);
+      console.log('ok');
+      // alert('Nhấn kết quả để hiển thị');
+
     }
     else{
 
@@ -67,7 +71,7 @@ router.get('/viewdatas', async (req, res, next) => {
     // Kiểm tra xem có dữ liệu không
     if (!values) {
       console.log('No data available in the specified timestamp range');
-      alert('No data available in the specified timestamp range');
+      alert('Không có dữ liệu được đo bởi ngày bạn chọn');
       return;
       // return res.status(404).send("No data available in the specified timestamp range.");
     }
@@ -86,7 +90,6 @@ router.get('/viewdatas', async (req, res, next) => {
     let prevMeanZ = 0;
 
     // Mảng để lưu kết quả tính toán
-    // const results = [];
     const promises = [];
 
     // Tạo tên collection động dựa trên startTimestamp
@@ -123,7 +126,7 @@ router.get('/viewdatas', async (req, res, next) => {
       promises.push(promise);
       this.results =[];
       // Lưu kết quả vào mảng để trả về cho client
-      this.results.push({
+      results.push({
         id: Math.floor(i / n),
         timestamp: date_time,
         meanY: meanY,
@@ -132,7 +135,7 @@ router.get('/viewdatas', async (req, res, next) => {
         madZ: madZ,
         deltaP: deltaP
       });
-
+      // console.log(results);
       prevMeanY = meanY;
       prevMeanZ = meanZ;
     }
@@ -140,11 +143,8 @@ router.get('/viewdatas', async (req, res, next) => {
     // Đợi tất cả các promise hoàn thành
     await Promise.all(promises);
     
-
-    // Trả về kết quả cho client
-    // res.json(results);
-    // res.render("index");
-
+    res.json(results);
+    // alert('Nhấn kết quả để hiển thị');
 
   } 
 }
@@ -153,7 +153,6 @@ router.get('/viewdatas', async (req, res, next) => {
     next(error);
   }
 });
-
 // Tinh ket qua chat luong giac ngu
 //Ham tim dinh tren thap nhat
 function findU(Udelta, pre, cur, next){
@@ -166,21 +165,19 @@ function findU(Udelta, pre, cur, next){
   return Udelta;
 };
 
-router.get("/caculator", async (req, res) => {
+router.get('/caculator', async (req, res) => {
   // console.log(this.results.length);
   let UdeltaP = 100.0;
   let UmadY = 5.0;
   let UmadZ = 5.0;
 
-  temp = this.results;
-  // console.log(UdeltaP,' ', UmadY, ' ',UmadZ );
-  // Loop only up to the third-to-last element
+  temp = results;
+
+  console.log('chieu dai temp',temp.length);
   for (let i = 0; i < temp.length - 2; i++) {
-    // console.log(temp[i]);
     UdeltaP = findU(UdeltaP, temp[i].deltaP, temp[i+1].deltaP, temp[i+2].deltaP);
     UmadY = findU(UmadY, temp[i].madY, temp[i+1].madY, temp[i+2].madY);
     UmadZ = findU(UmadZ, temp[i].madZ, temp[i+1].madZ, temp[i+2].madZ);
-    // console.log(UdeltaP,' ', UmadY, ' ',UmadZ );
   }
   console.log(UdeltaP,' ', UmadY, ' ',UmadZ );
 
@@ -194,8 +191,8 @@ router.get("/caculator", async (req, res) => {
       count_move_body ++;
     }
   };
-  console.log(moveBody); 
-  console.log(count_move_body);
+  // console.log(moveBody); 
+  // console.log(count_move_body);
 
   // Đưa ra kết quả đánh giá cuối cùng
   if (moveBody.length === 0){
@@ -207,10 +204,15 @@ router.get("/caculator", async (req, res) => {
     const total_sleep = temp.length;
     let quality_sleep;
     for (let i = 1; i < moveBody.length; i++){
-      if (moveBody[i] - moveBody[i-1] < 60) count_light_sleep += moveBody[i] - moveBody[i-1];
+      if (moveBody[i] - moveBody[i-1] < 60) count_light_sleep += moveBody[i] - moveBody[i-1];// Giá trị 60 này được quy đổi do ở bài báo lấy ngưỡng là khoảng thời gian không chuyển động >= 20p là ngủ sâu, còn lại là ngủ nông
     }
-  quality_sleep = Math.round((1-(count_light_sleep/total_sleep)) * 100) / 100;
+  quality_sleep = Math.round((1-(count_light_sleep/total_sleep)) * 10000) / 10000;
+  // quality_sleep = 0.5;
   console.log(quality_sleep);
+  res.json({
+    quality_sleep: quality_sleep,
+    bad_sleep: 1 - quality_sleep,
+  });
   }
 });
 

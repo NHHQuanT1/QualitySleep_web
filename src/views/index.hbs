@@ -1,366 +1,287 @@
 <div class="home">
   <div class="chart_view">
-
-    <div class="chart-container">
-      <canvas id="myChart"></canvas>
-    </div>
-
-    <script>
-      dataArray = results;
-      const dataArray = Array.from({ length: 2000 }, (_, i) => Math.sin(i * 0.1) * 100);
-
-      // Bước 2: Lấy thẻ canvas
-      const ctx = document.getElementById("myChart").getContext("2d");
-
-      // Bước 3: Khởi tạo biểu đồ
-      const myChart = new Chart(ctx, {
-        type: "line", // Loại biểu đồ (line, bar, v.v.)
-        data: {
-          labels: [], // Không sử dụng nhãn
-          datasets: [{
-            label: "Performance", // Tên của dataset
-            data: dataArray, // Mảng dữ liệu của bạn (2000 phần tử)
-            borderColor: "#5e72e4", // Màu đường biểu đồ
-            backgroundColor: "transparent", // Màu nền (trong suốt)
-            borderWidth: 2, // Độ dày đường biểu đồ
-            pointRadius: 0, // Ẩn các điểm trên biểu đồ
-          }],
-        },
-        options: {
-          responsive: true, // Tự động điều chỉnh kích thước
-          maintainAspectRatio: false, // Không giữ tỷ lệ khung hình
-          legend: {
-            display: false, // Ẩn chú thích
-          },
-          tooltips: {
-            enabled: false, // Tắt tooltips
-          },
-          scales: {
-            xAxes: [{
-              display: false, // Ẩn trục x và nhãn
-              gridLines: {
-                display: false, // Ẩn đường lưới trên trục x
-              },
-            }],
-            yAxes: [{
-              gridLines: {
-                color: "rgba(0, 0, 0, 0.1)", // Màu đường lưới trục y
-              },
-              ticks: {
-                beginAtZero: true, // Bắt đầu trục y từ 0
-              },
-            }],
-          },
-        },
-      });
-    </script>
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="chart_child">
+{{!-- Hiển thị các giá trị madY, madZ, deltaP --}}
+ <div class="chart_child">
   <div class="card-header">
-    <h5 class="card-title mb-0">Biểu đồ trục giá trị MadY</h5>
-  </div>
-  <div class="card-body py-3">
-    <div class="chart chart-sm">
-      <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;"></canvas>
+      <h5 class="card-title mb-0">Biểu đồ biểu diễn giá trị MadY</h5>
+    </div>
+      <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 100%;"></canvas>
+  <div class="chart-container">
+    <div class="card-body py-3">
+      <div class="chart chart-sm">
+        {{!-- <canvas id="chartjs-dashboard-line"></canvas> --}}
+        <script>
+          const data = JSON.parse(localStorage.getItem('data'));; // Nhận dữ liệu JSON từ server
+              //const dataArray = data.map(row => Math.sin(row.madY*0.1)*100);
+              const dataArray = data.map(row => row.madY);
+
+
+              // Bước 2: Lấy thẻ canvas
+              const ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
+              // Bước 3: Khởi tạo biểu đồ
+              const myChart = new Chart(ctx, {
+                type: "line", // Loại biểu đồ (line, bar, v.v.)
+                data: {
+                  labels: data.map(row => row.id), // Không sử dụng nhãn
+                  datasets: [{
+                    label: "madY", // Tên của dataset
+                    data: dataArray, // Mảng dữ liệu của bạn
+                    borderColor: "#5e72e4", // Màu đường biểu đồ
+                    backgroundColor: "transparent", // Màu nền (trong suốt)
+                    borderWidth: 1, // Độ dày đường biểu đồ
+                    pointRadius: 0, // Ẩn các điểm trên biểu đồ
+                  }],
+                },
+                options: {
+                  responsive: false, // Tự động điều chỉnh kích thước
+                  maintainAspectRatio: false, // Không giữ tỷ lệ khung hình
+                  legend: {
+                    display: false, // Ẩn chú thích
+                  },
+                  tooltips: {
+                    enabled: false, // Tắt tooltips
+                  },
+                  scales: {
+                    xAxes: [{
+                      display: false, // Ẩn trục x và nhãn
+                      gridLines: {
+                        display: false, // Ẩn đường lưới trên trục x
+                      },
+                    }],
+                    yAxes: [{
+                      gridLines: {
+                        color: "rgba(0, 0, 0, 0.1)", // Màu đường lưới trục y
+                      },
+                      ticks: {
+                        beginAtZero: true, // Bắt đầu trục y từ 0
+                      },
+                    }],
+                  },
+                },
+              });
+        </script>
     </div>
   </div>
 </div>
+ </div>
 
-
-
-
-
-
-
-
-
-  {{!-- Trục Z --}}
-  <div class="chart_child">
-      <div class="card-header">
-          <h5 class="card-title mb-0">Biểu đồ trục Z</h5>
-      </div>
-      <div class="card-body py-3">
-          <div class="chart chart-sm"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-              <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;" width="856" height="504" class="chart-line chartjs-render-monitor"></canvas>
-          </div>
-      </div>
-  </div>
-
-  <script>
-  var chartsLine = document.querySelectorAll(".chart-line");
-
-  chartsLine.forEach(function(chart) {
-    if (!chart.getAttribute('data-chart-initialized')) {
-        var ctx = chart.getContext("2d");
-
-        var gradient = ctx.createLinearGradient(0, 0, 0, 225);
-        gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
-        gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-        // Line chart
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: ["21h", "22h", "23h", "0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h"],
-                datasets: [{
-                    label: "Sales ($)",
-                    fill: true,
-                    backgroundColor: gradient,
-                    borderColor: window.theme.primary,
-                    data: [
-                        2115,
-                        1562,
-                        1584,
-                        1892,
-                        1587,
-                        1923,
-                        2566,
-                        2448,
-                        2805,
-                        3438,
-                        2917,
-                        3327
-                    ]
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    intersect: false
-                },
-                hover: {
-                    intersect: true
-                },
-                plugins: {
-                    filler: {
-                        propagate: false
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        reverse: true,
-                        gridLines: {
-                            color: "rgba(0,0,0,0.0)"
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            stepSize: 1000
-                        },
-                        display: true,
-                        borderDash: [3, 3],
-                        gridLines: {
-                            color: "rgba(0,0,0,0.0)"
-                        }
-                    }]
-                }
-            }
-        });
-        chart.setAttribute("data-chart-initialized", "true");
-    }
-  });
-  </script>
-
-  {{!-- Nhiệt độ --}}
-  <div class="chart_child">
-      <div class="card-header">
-          <h5 class="card-title mb-0">Biểu đồ nhiệt độ</h5>
-      </div>
-      <div class="card-body py-3">
-          <div class="chart chart-sm"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-              <canvas id="chartjs-dashboard-line" style="display: block; height: 252px; width: 428px;" width="856" height="504" class="chart-line chartjs-render-monitor"></canvas>
-          </div>
-      </div>
-  </div>
-
-  <script>
-  var chartsLine = document.querySelectorAll(".chart-line");
-
-  chartsLine.forEach(function(chart) {
-    if (!chart.getAttribute('data-chart-initialized')) {
-        var ctx = chart.getContext("2d");
-
-        var gradient = ctx.createLinearGradient(0, 0, 0, 225);
-        gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
-        gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
-        // Line chart
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: ["21h", "22h", "23h", "0h", "1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h"],
-                datasets: [{
-                    label: "Sales ($)",
-                    fill: true,
-                    backgroundColor: gradient,
-                    borderColor: window.theme.primary,
-                    data: [
-                        2115,
-                        1562,
-                        1584,
-                        1892,
-                        1587,
-                        1923,
-                        2566,
-                        2448,
-                        2805,
-                        3438,
-                        2917,
-                        3327
-                    ]
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    intersect: false
-                },
-                hover: {
-                    intersect: true
-                },
-                plugins: {
-                    filler: {
-                        propagate: false
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        reverse: true,
-                        gridLines: {
-                            color: "rgba(0,0,0,0.0)"
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            stepSize: 1000
-                        },
-                        display: true,
-                        borderDash: [3, 3],
-                        gridLines: {
-                            color: "rgba(0,0,0,0.0)"
-                        }
-                    }]
-                }
-            }
-        });
-        chart.setAttribute("data-chart-initialized", "true");
-    }
-  });
-  </script>
-    
-  </div>
-
-  <div class="chart_result">
-    <div class="card flex-fill w-100 draggable">
-    <div class="card-header">
-        <h5 class="card-title mb-0">Đánh giá giấc ngủ</h5>
+{{!-- Trục Z --}}
+ <div class="chart_child">
+  <div class="card-header">
+      <h5 class="card-title mb-0">Biểu đồ biểu diễn giá trị MadZ</h5>
     </div>
-    <div class="card-body d-flex">
-        <div class="align-self-center w-100">
+      <canvas id="chartjs-dashboard-line2" style="display: block; height: 252px; width: 100%;"></canvas>
+  <div class="chart-container">
+    <div class="card-body py-3">
+      <div class="chart chart-sm">
+        {{!-- <canvas id="chartjs-dashboard-line"></canvas> --}}
+        <script>
+          const data2 = JSON.parse(localStorage.getItem('data'));; // Nhận dữ liệu JSON từ server
+              const dataArray2 = data2.map(row => row.madZ);
+              // Bước 2: Lấy thẻ canvas
+              const ctx2 = document.getElementById("chartjs-dashboard-line2").getContext("2d");
+              // Bước 3: Khởi tạo biểu đồ
+              const myChart2 = new Chart(ctx2, {
+                type: "line", // Loại biểu đồ (line, bar, v.v.)
+                data: {
+                  labels: data2.map(row => row.id), // Không sử dụng nhãn
+                  datasets: [{
+                    label: "madZ", // Tên của dataset
+                    data: dataArray2, // Mảng dữ liệu 
+                    borderColor: "#5e72e4", // Màu đường biểu đồ
+                    backgroundColor: "transparent", // Màu nền (trong suốt)
+                    borderWidth: 1, // Độ dày đường biểu đồ
+                    pointRadius: 0, // Ẩn các điểm trên biểu đồ
+                  }],
+                },
+                options: {
+                  responsive: false, // Tự động điều chỉnh kích thước
+                  maintainAspectRatio: false, // Không giữ tỷ lệ khung hình
+                  legend: {
+                    display: false, // Ẩn chú thích
+                  },
+                  tooltips: {
+                    enabled: false, // Tắt tooltips
+                  },
+                  scales: {
+                    xAxes: [{
+                      display: false, // Ẩn trục x và nhãn
+                      gridLines: {
+                        display: false, // Ẩn đường lưới trên trục x
+                      },
+                    }],
+                    yAxes: [{
+                      gridLines: {
+                        color: "rgba(0, 0, 0, 0.1)", // Màu đường lưới trục z
+                      },
+                      ticks: {
+                        beginAtZero: true, // Bắt đầu trục y từ 0
+                      },
+                    }],
+                  },
+                },
+              });
+        </script>
+    </div>
+  </div>
+</div>
+ </div>
+
+{{!-- Trục deltaP --}}
+ <div class="chart_child">
+  <div class="card-header">
+      <h5 class="card-title mb-0">Biểu đồ biểu diễn giá trị DeltaP</h5>
+    </div>
+      <canvas id="chartjs-dashboard-line3" style="display: block; height: 252px; width: 100%;"></canvas>
+  <div class="chart-container">
+    <div class="card-body py-3">
+      <div class="chart chart-sm">
+        {{!-- <canvas id="chartjs-dashboard-line"></canvas> --}}
+        <script>
+          const data3 = JSON.parse(localStorage.getItem('data'));; // Nhận dữ liệu JSON từ server
+              const dataArray3 = data3.slice(1).map(row => row.deltaP);
+
+              // Bước 2: Lấy thẻ canvas
+              const ctx3 = document.getElementById("chartjs-dashboard-line3").getContext("2d");
+              // Bước 3: Khởi tạo biểu đồ
+              const myChart3 = new Chart(ctx3, {
+                type: "line", // Loại biểu đồ (line, bar, v.v.)
+                data: {
+                  labels: data3.map(row => row.id), // Không sử dụng nhãn
+                  datasets: [{
+                    label: "deltaP", // Tên của dataset
+                    data: dataArray3, // Mảng dữ liệu 
+                    borderColor: "#5e72e4", // Màu đường biểu đồ
+                    backgroundColor: "transparent", // Màu nền (trong suốt)
+                    borderWidth: 1, // Độ dày đường biểu đồ
+                    pointRadius: 0, // Ẩn các điểm trên biểu đồ
+                  }],
+                },
+                options: {
+                  responsive: false, // Tự động điều chỉnh kích thước
+                  maintainAspectRatio: false, // Không giữ tỷ lệ khung hình
+                  legend: {
+                    display: false, // Ẩn chú thích
+                  },
+                  tooltips: {
+                    enabled: false, // Tắt tooltips
+                  },
+                  scales: {
+                    xAxes: [{
+                      display: false, // Ẩn trục x và nhãn
+                      gridLines: {
+                        display: false, // Ẩn đường lưới trên trục x
+                      },
+                    }],
+                    yAxes: [{
+                      gridLines: {
+                        color: "rgba(0, 0, 0, 0.1)", // Màu đường lưới trục deltaP
+                      },
+                      ticks: {
+                        beginAtZero: true, // Bắt đầu trục y từ 0
+                      },
+                    }],
+                  },
+                },
+              });
+        </script>
+    </div>
+  </div>
+</div>
+ </div>
+
+
+{{!-- Hiển thị kết quả --}}
+      <div class="chart_result">
+      <div class="card flex-fill w-100 draggable">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Đánh giá giấc ngủ</h5>
+        </div>
+        <div class="card-body d-flex">
+          <div class="align-self-center w-100">
             <div class="py-3">
-                <div class="chart chart-xs"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                    <canvas id="chartjs-dashboard-pie" width="856" height="400" style="display: block; height: 200px; width: 428px;" class="chart-pie chartjs-render-monitor"></canvas>
-                </div>
+              <div class="chart chart-xs">
+                <canvas id="chartjs-dashboard-pie" width="856" height="400" style="display: block; height: 200px; width: 428px;" class="chart-pie chartjs-render-monitor"></canvas>
+              </div>
             </div>
 
             <table class="table mb-0">
-                <tbody>
-                    <tr>
-                        <td>Giấc ngủ ngon</td>
-                        <td class="text-end">88%</td>
-                    </tr>
-                    <tr>
-                        <td>Giấc ngủ tệ</td>
-                        <td class="text-end">12%</td>
-                    </tr>
-                </tbody>
+              <tbody>
+                <tr>
+                  <td>Giấc ngủ ngon</td>
+                  <td class="text-end" id="good-sleep">0%</td>
+                </tr>
+                <tr>
+                  <td>Giấc ngủ tệ</td>
+                  <td class="text-end" id="bad-sleep">0%</td>
+                </tr>
+              </tbody>
             </table>
+          </div>
         </div>
+      </div>
+      <button id="quality_sleep" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+  Kết quả
+</button>
     </div>
-</div>
-<button id="quality_sleep">Kết quả</button>
 
-<script>
-  //Tao nut lay ket qua
-    document.addEventListener('DOMContentLoaded', function () {
-    // Lấy nút "Kết quả" bằng ID
-    const qualitySleepButton = document.getElementById('quality_sleep');
+    <script>
+        // Lấy nút "Kết quả" bằng ID
+        const qualitySleepButton = document.getElementById('quality_sleep');
 
-    // Lắng nghe sự kiện click
-    qualitySleepButton.addEventListener('click', function () {
-      {{!-- alert('Nút "Kết quả" đã được nhấn!'); --}}
-      const apiUrl = `/caculator`;
-      fetch(apiUrl)
-      .then(response => {
-        if (!response.ok) {
-          // Nếu có lỗi, trả về thông báo
-          return response.json().then(errorData => {
-            throw new Error(errorData.error || "Lỗi khi gọi API");
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Dữ liệu nhận được:', data);
-        // Nếu có dữ liệu, chuyển hướng hoặc render trang index
-        window.location.href = "/"; // Chuyển hướng về trang chủ
-      })
-      .catch(error => {
-        console.error('Lỗi khi gọi API:', error);
-        alert(error.message || 'Dữ liệu ngày này chưa được đo, vui lòng chọn ngày khác');
-      });
-    })
-});
-</script>
+        // Lắng nghe sự kiện click
+        qualitySleepButton.addEventListener('click', function () {
+          const apiUrl = `/caculator`;
 
-<script>
-var chartsPie = document.querySelectorAll(".chart-pie");
+          // Gọi API để lấy kết quả
+          fetch(apiUrl)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("Lỗi khi gọi API");
+              }
+               // Cập nhật kết quả lên UI
+              return response.json();
+            })
+            .then(data => {
+              console.log('Dữ liệu nhận được:', data);
+             
+              const qualitySleep = data.quality_sleep;
+              const badSleep = 1 - qualitySleep;
 
-chartsPie.forEach(function(chart) {
-  if (!chart.getAttribute('data-chart-initialized')) {
-      new Chart(chart, {
-      type: "pie",
-        data: {
-          labels: ["Chrome", "Firefox"],
-          datasets: [{
-            data: [88%, 12%],
-            backgroundColor: [
-              window.theme.primary,
-              window.theme.danger
-            ],
-            borderWidth: 5
-          }]
-        },
-        options: {
-          responsive: !window.MSInputMethodContext,
-          maintainAspectRatio: false,
-          legend: {
-            display: false
-          },
-          cutoutPercentage: 75
-        }
-      });
-      chart.setAttribute("data-chart-initialized", "true");
+              // Cập nhật bảng kết quả
+              document.getElementById('good-sleep').innerText = `${(qualitySleep * 100)}%`;
+              document.getElementById('bad-sleep').innerText = `${(badSleep * 100).toFixed(2)}%`;
+
+              // Cập nhật biểu đồ pie chart
+              chart.data.datasets[0].data = [qualitySleep * 100, badSleep * 100];
+              chart.update();
+            })
+            .catch(error => {
+              console.error('Lỗi khi gọi API:', error);
+              alert('Đã xảy ra lỗi khi tính toán kết quả!');
+            });
+        });
+
+        const chart = new Chart(document.getElementById("chartjs-dashboard-pie"), {
+  type: "pie",
+  data: {
+    labels: ["Giấc ngủ ngon", "Giấc ngủ tệ"],
+    datasets: [{
+      data: [0, 0], // Giá trị mặc định
+      backgroundColor: [
+        '#28a745', // Màu cho "Giấc ngủ ngon"
+        '#dc3545'  // Màu cho "Giấc ngủ tệ"
+      ],
+      borderColor: "transparent"
+    }]
+  },
+  options: {
+    maintainAspectRatio: false,
+    cutoutPercentage: 65,
   }
 });
-</script>
-    
+      
+    </script>    
+    </div>
   </div>
-
-
 </div>

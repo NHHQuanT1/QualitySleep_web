@@ -16,15 +16,20 @@ body {
 }
 
 #quality_sleep {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-color: #007bff; /* Màu nền */
+  color: white; /* Màu chữ */
+  border: none; /* Bỏ viền */
+  padding: 10px 20px; /* Kích thước padding */
+  border-radius: 5px; /* Bo góc */
+  font-size: 16px; /* Cỡ chữ */
+  cursor: pointer; /* Con trỏ chuột */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng chuyển động */
 }
+
+/* Hiệu ứng khi hover */
 #quality_sleep:hover {
-  background-color: #7aaadf;
+  background-color: #0056b3; /* Đổi màu nền */
+  transform: scale(1.05); /* Phóng to nhẹ */
 }
 
 .divider:after,

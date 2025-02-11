@@ -1,7 +1,7 @@
-const express = require("express");
-const path = require("path");
-const exphbs = require("express-handlebars");
-const morgan = require("morgan");
+const express = require('express');
+const path = require('path');
+const exphbs = require('express-handlebars');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -15,17 +15,21 @@ app.engine(
   exphbs.create({
     defaultLayout: "main",
     extname: ".hbs",
-    partialsDir: path.join(__dirname, 'views/paritals' )
+    partialsDir: path.join(__dirname, 'views/paritals' ),
+    helpers: {
+      json: (context) => JSON.stringify(context), // Định nghĩa helper `json`
+    },
   }).engine
 );
-app.set("view engine", ".hbs");
+app.set('view engine', '.hbs');
 
 // middlewares
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 
+
 // Routes
-app.use(require("./routes/index"));
+app.use(require('./routes/index'));
 // app.use(require("./routes"));
 
 // // Static files

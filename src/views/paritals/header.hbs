@@ -53,7 +53,7 @@
     });
 </script>
 
-{{!-- CHọn 1 ngày --}}
+{{!-- Chọn 1 ngày --}}
 <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Phân tích
@@ -64,8 +64,10 @@
         <label for="selectedDate">Giấc ngủ ngày:</label>
         <input type="date" class="form-control" id="selectedDate" name="selectedDate" required>
       </div>
-      <button type="submit" class="btn btn-primary">Chọn</button>
+      {{!-- <button type="submit" class="btn btn-primary">Chọn</button> --}}
+      <button id="viewChart" type="submit" class="btn btn-primary">Chọn</button>
     </form>
+    {{!-- <button id="viewChart" type="submit" class="btn btn-primary">Hiển thị</button> --}}
   </div>
 </div>
 
@@ -105,6 +107,7 @@
 
     fetch(apiUrl)
       .then(response => {
+        console.log(response);
         if (!response.ok) {
           // Nếu có lỗi, trả về thông báo
           return response.json().then(errorData => {
@@ -115,6 +118,8 @@
       })
       .then(data => {
         console.log('Dữ liệu nhận được:', data);
+        localStorage.setItem('data', JSON.stringify(data));
+        console.log("save",localStorage.getItem('data'))
         // Nếu có dữ liệu, chuyển hướng hoặc render trang index
         window.location.href = "/"; // Chuyển hướng về trang chủ
       })
@@ -130,13 +135,12 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <img src="/src/public/img/avt.jpg" alt="" class="user-avatar">
             Hồng Quân
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/accout/myprofile">Thông tin tài khoản</a>
+            <a class="dropdown-item" href="#">Thông tin tài khoản</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/stored/courses">Lịch sử tra cứu</a>
+            <a class="dropdown-item" href="#">Lịch sử tra cứu</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Đăng xuất</a>
           </div>
