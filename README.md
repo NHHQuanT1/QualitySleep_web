@@ -1,4 +1,4 @@
-# Nodejs/Express Firebase Admin SDK Example
+# Nodejs/Express Firebase
 
 CRUD Web application using Firebasee Admin SDK with Firestore, Nodejs and express
 
